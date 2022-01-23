@@ -1,5 +1,8 @@
 const inquirer = require("inquirer");
 const fs = require("fs");
+const {
+    report
+} = require("process");
 
 inquirer
     .prompt([{
@@ -23,28 +26,6 @@ inquirer
             name: "installations",
         },
         {
-            type: "list",
-            message: "Choose a license to create your badge:",
-            name: "license",
-            choices: [{
-                    name: "MIT license",
-                    value: "MIT"
-                },
-                {
-                    name: "Apache License 2.0",
-                    value: "Apache"
-                },
-                {
-                    name: 'BSD 3-Clause "New" or "Revised" license',
-                    value: "BSD3"
-                },
-                {
-                    name: "GNU General Public License (GPL)",
-                    value: "GPL"
-                },
-            ],
-        },
-        {
             type: "input",
             message: "List all contributors for your project: ",
             name: "collaborators",
@@ -57,29 +38,32 @@ inquirer
     ])
     .then((response) => {
         const readme = `
-        # <${response.title}>
+# Title <${response.title}>
 
-        ## Description
+## Description
+${response.description}
         
-        ## Table of Contents (optional)
+## Table of Contents (optional)
+${response.contents}
+
+## Installation 
+${response.installation}
+ 
+## Collaborators
+${response.collaborators}
         
-        ## Installation 
+## License
+${response.license}   
+
+
+## How to Contribute
+
+
+## Tests
         
-        ## Collaborators
-        
-        ## License
-        
-        ## Badge
-        
-        ## How to Contribute
-        
-        ## Tests
-        
-        
-        ## If you have further questions feel free to contact me at 
-        []
+## If you have further questions feel free to contact me at 
+[${response.questions}]
         `;
-        fs.writeFile('README.md', readme, (err) =>
-            err ? console.error(err) : console.log('Success!')
-        );
+        fs.writeFile('README.md', (readme, badgeChoice), (err) => err ? console.error(err) : console.log('Success!'));
     })
+
