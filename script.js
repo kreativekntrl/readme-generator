@@ -44,7 +44,7 @@ inquirer
         },
         {
             type: "input",
-            message: "List all contributors for your project: ",
+            message: "List all collaborators for your project: ",
             name: "collaborators",
         },
         {
@@ -62,33 +62,38 @@ inquirer
             message: "Please enter your email address: ",
             name: "questions",
         },
+        {
+            type: "input",
+            message: "Please enter your GitHub username: ",
+            name: "github",
+        }
     ])
     .then(function (response) {
-        // Create a license string
-        let badge;
-        switch (response.license) {
-            case "MIT":
-                badge =
-                    "[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)";
-                break;
-            case "Apache":
-                badge =
-                    "[![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)";
-                break;
-            case "BSD3":
-                badge =
-                    "[![License](https://img.shields.io/badge/License-BSD_3--Clause-blue.svg)](https://opensource.org/licenses/BSD-3-Clause)";
-                break;
-            case "GPL":
-                badge =
-                    "[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)";
-                break;
+            // Create a license string
+            let badge;
+            switch (response.license) {
+                case "MIT":
+                    badge =
+                        "[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)";
+                    break;
+                case "Apache":
+                    badge =
+                        "[![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)";
+                    break;
+                case "BSD3":
+                    badge =
+                        "[![License](https://img.shields.io/badge/License-BSD_3--Clause-blue.svg)](https://opensource.org/licenses/BSD-3-Clause)";
+                    break;
+                case "GPL":
+                    badge =
+                        "[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)";
+                    break;
 
-            default:
-                throw new Error(`Invalid license ${response.license}`);
-        }
+                default:
+                    throw new Error(`Invalid license ${response.license}`);
+            }
 
-        const readme = `
+                    const readme = `
 # Title <${response.title}>
 ${badge}
 
@@ -98,8 +103,8 @@ ${response.description}
 ## Table of contents
 [Title <${response.title}>](#title)
 - [Description](#description)
-- [Installation](#installation)
 - [Collaborators](#collaborators)
+- [Installation](#installation)
 - [License](#license)
 - [How to Contribute](#how-to-contribute)
 - [Tests](#tests)
@@ -109,11 +114,8 @@ ${response.description}
 ${response.collaborators}
 
 ## Installation 
-${response.installation}
-
-## Collaborators
-${response.collaborators}
-        
+${response.installations}
+      
 ## License
 ${response.license}     
 
@@ -128,6 +130,9 @@ ${response.tests}
 ## Questions
 If you have further questions feel free to contact me at 
 [${response.questions}]
+
+## GitHub 
+[https://github.com/${response.github}]
         `;
-        fs.writeFile('README.md', readme, (err) => err ? console.error(err) : console.log('Success!'));
-    })
+                    fs.writeFile('README.md', readme, (err) => err ? console.error(err) : console.log('Success!'));
+            })
